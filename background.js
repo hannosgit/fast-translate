@@ -11,7 +11,6 @@ async function fetchTranslationBing(wordToTranslate) {
   myHeaders.append("Content-type", "application/x-www-form-urlencoded");
   myHeaders.append("Host", "www.bing.com");
   const body = "&from=en&to=de&text=" + wordToTranslate + "&token=yMb5YBIjP1879zwySltTzgyDwemmi97h&key=1731866254300";
-  // &from=de&to=en&text=Bla&translatedtext=bla%0A&token=yMb5YBIjP1879zwySltTzgyDwemmi97h&key=1731866254300
 
   const request = new Request("https://www.bing.com/tlookupv3?isVertical=1&=&IG=6DEF3147DE7840E9A2A4271D5C6F0E18&IID=translator.5023.2", {
     method: "POST",
@@ -25,25 +24,11 @@ async function fetchTranslationBing(wordToTranslate) {
     }
 
     const json = await response.json();
-    console.log(json);
     return json[0]?.translations[0]?.displayTarget;
   } catch (error) {
     console.error(error.message);
   }
 }
-
-// browser.menus.onClicked.addListener((info, tab) => {
-//     switch (info.menuItemId) {
-//         case menuItemId:
-//             const wordToTranslate = info.selectionText;
-//             const translatedWord = fetchTranslation(wordToTranslate);
-//             if(translatedWord){
-//                 updateMenuItem(translatedWord);
-//             }
-
-//             break;
-//     }
-// });
 
 function updateMenuItem(text) {
   browser.menus.update(menuItemId, {
@@ -53,8 +38,6 @@ function updateMenuItem(text) {
 }
 
 browser.menus.onShown.addListener(async (info, tab) => {
-  console.log(info);
-  console.log(tab);
   const translatedWord = await fetchTranslationBing(info.selectionText);
   if (translatedWord) {
     updateMenuItem(translatedWord); // updateMenuItem(`Translate "%s"`);
