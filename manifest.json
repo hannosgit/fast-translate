@@ -11,16 +11,23 @@
 
   "permissions": [
     "contextMenus",
-    "activeTab",
-    "<all_urls>"
+    "activeTab"
   ],
 
   "host_permissions": [
     "<all_urls>"
   ],
 
-  "browser_action": {
+  "action": {
     "default_icon": "icons/fast-translate.svg",
     "default_title": "FastTranslate"
+  },
+
+  "browser_specific_settings": {
+  "gecko": {
+    "id": "fast_translate_test@hannos.at"
   }
+}
+
+
 }
