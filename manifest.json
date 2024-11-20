@@ -1,10 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "TranslateMenu",
-    "version": "1.0",
-  
-    "description": "Adds a browser action icon to the toolbar. Click the button to choose a beast. The active tab's body content is then replaced with a picture of the chosen beast. See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Examples#beastify",
-    "homepage_url": "https://github.com/mdn/webextensions-examples/tree/main/beastify",
+    "name": "FastTranslate",
+    "version": "1.0",  
+    "description": "Adds a context menu entry that shows the translation of the selected text.",
 
     "background": {
       "scripts": ["background.js"]
@@ -17,8 +15,8 @@
     ],
   
     "browser_action": {
-      "default_icon": "icons/translate-32.png",
-      "default_title": "Translate"
+      "default_icon": "icons/fast-translate.svg",
+      "default_title": "FastTranslate"
     }
   
   }
