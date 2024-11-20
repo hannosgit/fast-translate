@@ -1,23 +1,26 @@
 {
-    "manifest_version": 2,
-    "name": "FastTranslate",
-    "version": "1.0",  
-    "description": "Adds a context menu entry that shows the translation of the selected text.",
+  "manifest_version": 3,
+  "name": "FastTranslate",
+  "version": "1.0",
+  "description": "Adds a context menu entry that shows the translation of the selected text.",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
 
-    "background": {
-      "scripts": ["background.js"]
-    },
-  
-    "permissions": [
-      "menus",
-      "activeTab",
-      "<all_urls>"
-    ],
-  
-    "browser_action": {
-      "default_icon": "icons/fast-translate.svg",
-      "default_title": "FastTranslate"
-    }
-  
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "<all_urls>"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/fast-translate.svg",
+    "default_title": "FastTranslate"
   }
-  
+}

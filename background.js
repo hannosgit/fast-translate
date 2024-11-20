@@ -1,12 +1,12 @@
 const MENU_ITEM_ID = "translate-selection";
 
-browser.menus.create({
+browser.contextMenus.create({
   id: MENU_ITEM_ID,
   title: "Translating..",
   contexts: ["selection"]
 });
 
-browser.menus.onShown.addListener(async (info, tab) => {
+browser.contextMenus.onShown.addListener(async (info, tab) => {
   const selectedText = info.selectionText.trim();
   const translatedWord1 = await fetchTranslationBing(selectedText, "de");
 
@@ -19,10 +19,10 @@ browser.menus.onShown.addListener(async (info, tab) => {
 });
 
 function updateMenuItem(text) {
-  browser.menus.update(MENU_ITEM_ID, {
+  browser.contextMenus.update(MENU_ITEM_ID, {
     title: text
   });
-  browser.menus.refresh();
+  browser.contextMenus.refresh();
 }
 
 function equalsIgnoringCase(text, other) {
