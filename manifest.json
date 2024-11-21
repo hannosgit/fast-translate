@@ -8,26 +8,24 @@
       "background.js"
     ]
   },
-
   "permissions": [
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
-
   "host_permissions": [
     "<all_urls>"
   ],
-
   "action": {
     "default_icon": "icons/fast-translate.svg",
     "default_title": "FastTranslate"
   },
-
   "browser_specific_settings": {
-  "gecko": {
-    "id": "fast_translate_test@hannos.at"
+    "gecko": {
+      "id": "fast_translate_test@hannos.at"
+    }
+  },
+  "options_ui": {
+    "page": "options.html"
   }
-}
-
-
 }

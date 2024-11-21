@@ -1,6 +1,15 @@
+// ----- Options ----- 
+
+function handleClick() {
+  browser.runtime.openOptionsPage();
+}
+
+browser.action.onClicked.addListener(handleClick);
+
+// ----- Business Logic ----- 
+
 const MENU_ITEM_ID = "translate-selection";
-const LANGUAGE_ONE = "it";
-const LANGUAGE_TWO = "de";
+
 
 browser.contextMenus.create({
   id: MENU_ITEM_ID,
@@ -10,11 +19,16 @@ browser.contextMenus.create({
 
 browser.contextMenus.onShown.addListener(async (info, tab) => {
   const selectedText = info.selectionText.trim();
-  const translatedWord1 = await fetchTranslationBing(selectedText, LANGUAGE_ONE, LANGUAGE_TWO);
+  const l1 = (await browser.storage.local.get('language1')).language1 || 'English';
+  const l2 = (await browser.storage.local.get('language2')).language2 || 'German';
+
+  const lang1 = getAbbreviationForLanguage(l1);
+  const lang2 = getAbbreviationForLanguage(l2);
+  const translatedWord1 = await fetchTranslationBing(selectedText, lang1, lang2);
 
   let displayedText = translatedWord1;
-  if(equalsIgnoringCase(selectedText, translatedWord1)){
-    displayedText = await fetchTranslationBing(selectedText, LANGUAGE_TWO, LANGUAGE_ONE);
+  if (equalsIgnoringCase(selectedText, translatedWord1)) {
+    displayedText = await fetchTranslationBing(selectedText, lang2, lang1);
   }
 
   updateMenuItem(displayedText);
@@ -29,6 +43,28 @@ function updateMenuItem(text) {
 
 function equalsIgnoringCase(text, other) {
   return text.localeCompare(other, undefined, { sensitivity: 'base' }) === 0;
+}
+
+function getAbbreviationForLanguage(language) {
+  let abbrevation = 'en';
+  switch (language) {
+    case 'German':
+      abbrevation = 'de';
+      break;
+    case 'Italian':
+      abbrevation = 'it';
+      break;
+    case 'French':
+      abbrevation = 'fr';
+      break;
+    case 'Spanish':
+      abbrevation = 'es';
+      break;
+    case 'Chinese Simplified':
+      abbrevation = 'zh-Hans';
+      break;
+  }
+  return abbrevation;
 }
 
 async function fetchTranslationBing(wordToTranslate, languageFrom, languageTo) {
