@@ -1,15 +1,14 @@
 // ----- Options ----- 
 
+browser.action.onClicked.addListener(handleClick);
+
 function handleClick() {
   browser.runtime.openOptionsPage();
 }
 
-browser.action.onClicked.addListener(handleClick);
-
 // ----- Business Logic ----- 
 
 const MENU_ITEM_ID = "translate-selection";
-
 
 browser.contextMenus.create({
   id: MENU_ITEM_ID,
@@ -18,7 +17,18 @@ browser.contextMenus.create({
 });
 
 browser.contextMenus.onShown.addListener(async (info, tab) => {
-  const selectedText = info.selectionText.trim();
+  const displayedText = await translate(info.selectionText.trim());
+
+  updateMenuItem(displayedText);
+});
+
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
+  const displayedText = await translate(info.selectionText);
+
+  replaceText(tab, displayedText);
+});
+
+async function translate(selectedText){
   const l1 = (await browser.storage.local.get('language1')).language1 || 'English';
   const l2 = (await browser.storage.local.get('language2')).language2 || 'German';
 
@@ -31,8 +41,23 @@ browser.contextMenus.onShown.addListener(async (info, tab) => {
     displayedText = await fetchTranslationBing(selectedText, lang2, lang1);
   }
 
-  updateMenuItem(displayedText);
-});
+  return displayedText;
+}
+
+async function replaceText(tab, replacementText){
+  try {
+    await browser.scripting.executeScript({
+      target: {
+        tabId: tab.id,
+        allFrames: true,
+      },
+      files: ["content-script.js"],
+    });
+    browser.tabs.sendMessage(tab.id, replacementText);
+  } catch (err) {
+    console.error(`failed to execute script: ${err}`);
+  }
+}
 
 function updateMenuItem(text) {
   browser.contextMenus.update(MENU_ITEM_ID, {
