@@ -17,6 +17,7 @@ browser.contextMenus.create({
 });
 
 browser.contextMenus.onShown.addListener(async (info, tab) => {
+  updateMenuItem("Translating..");
   const displayedText = await translate(info.selectionText.trim());
 
   updateMenuItem(displayedText);
