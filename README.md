@@ -14,7 +14,3 @@ Build:
 ````
 web-ext build --overwrite-dest
 ```
-
-## Feature Backlog
-
-* Chrome Support
